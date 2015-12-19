@@ -5,6 +5,7 @@ AddCSLuaFile("sh_weightmanager.lua")
 include("sv_database.lua")
 include("sh_weightmanager.lua")
 include("sh_playerweight.lua")
+include("sv_message.lua")
 
 CreateConVar("ttt_karma_increase_weight", "0", FCVAR_ARCHIVE + FCVAR_NOTIFY, "Enables karma increased weight. Set ttt_karma_increase_weight_threshold for the minimum karma needed.")
 CreateConVar("ttt_karma_increase_weight_threshold", "950", FCVAR_ARCHIVE + FCVAR_NOTIFY, "Minimum karma for giving very little bonus weight to the player. Has a chance to give 0 extra weight. (default 950, based off of default max karma)")
