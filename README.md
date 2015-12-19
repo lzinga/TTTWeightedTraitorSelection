@@ -1,4 +1,4 @@
-## Warning from author
+###### Warning from author
 This was literally one of my first scripts I wrote for gmod so im sure you will find some interesting things that I did to make it work.
 
 
