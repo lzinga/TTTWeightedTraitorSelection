@@ -70,13 +70,13 @@ function SetFunModeScaleAllPlayers()
 end
 
 function GetActivePlayersTotalWeight()
-    local totalWeight = 0
-    for k,ply in pairs(player.GetAll()) do
-        if IsValid(ply) and (ply:GetWeight() ~= nil) then
-          totalWeight = totalWeight + ply:GetWeight()
-        end
-    end
-    return totalWeight
+	local totalWeight = 0
+	for k,ply in pairs(player.GetAll()) do
+		if IsValid(ply) and (ply:GetWeight() ~= nil) then
+			totalWeight = totalWeight + ply:GetWeight()
+		end
+	end
+	return totalWeight
 end
 
 function PLAYER:GetTraitorChance()
