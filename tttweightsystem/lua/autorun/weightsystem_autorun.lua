@@ -1,4 +1,4 @@
-local version = "1.0.8";
+local version = "1.0.9";
 
 WeightSystem = WeightSystem or {}
 WeightSystem.VERSION = version ;
@@ -71,53 +71,45 @@ else
 end
 
 
-hook.Add("InitPostEntity", "maestro_updatecheck", function()
-	http.Fetch( "https://raw.githubusercontent.com/lzinga/TTTWeightedTraitorSelection/master/tttweightsystem/lua/autorun/weightsystem_autorun.lua", function(body)
+
+hook.Add("InitPostEntity", "TTTWS_updatecheck", function()
+		http.Fetch("https://raw.githubusercontent.com/lzinga/TTTWeightedTraitorSelection/master/tttweightsystem/lua/autorun/weightsystem_autorun.lua", function(body)
 			local str = string.match(body, "[^\n]+")
-			local ver = string.sub(str, 18, -2)
+			local ver = str:sub(18, -3)
 			local major, minor, patch = ver:match("(%d+)%.(%d+)%.(%d+)")
 			major = tonumber(major) or 0
 			minor = tonumber(minor) or 0
 			patch = tonumber(patch) or 0
-
-			local curmajor, curminor, curpatch = WeightSystem.VERSION:match("(%d+)%.(%d+)%.(%d+)")
+			local curmajor, curminor, curpatch = version:match("(%d+)%.(%d+)%.(%d+)")
 			curmajor = tonumber(curmajor) or 0
 			curminor = tonumber(curminor) or 0
 			curpatch = tonumber(curpatch) or 0
-
 			local msg
 			if major > curmajor then
-	--3456789012345678901234567890123
 				msg = [[
-	A new major version of TTT Weight System is
-	available (%%%%%%%%).
-	]]
+A new major version of TTT Weight System is
+available (%%%%%%%%).
+]]
 			elseif minor > curminor then
 				msg = [[
-	A new minor version of TTT Weight System is
-	available (%%%%%%%%).
-	]]
+A new minor version of TTT Weight System is
+available (%%%%%%%%).
+]]
 			elseif patch > curpatch then
 				msg = [[
-	A new patch is available for
-	TTT Weight System (%%%%%%%%).
-	]]
-			elseif
+A new patch is available for
+TTT Weight System (%%%%%%%%).
+]]
+			else
 				msg = [[
-	You have the latest version
-	of TTT Weight System (%%%%%%%%).
-	]]
+[TTT Weight System] is up to date (%%%%%%%%).
+]]
 			end
-
-
 			if msg then
 				msg = string.gsub(msg, "%%+", ver)
-				print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 				for w in string.gmatch(msg, "[^\n]+") do
-					print("\186 " .. w .. string.rep(" ", 32 - #w) .. " \186")
+					LocalPlayer():PrintMessage(HUD_PRINTTALK , w .. string.rep(" ", 32 - #w))
 				end
-				print("\200\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\188")
 			end
-
 		end)
-	end)
+end)
