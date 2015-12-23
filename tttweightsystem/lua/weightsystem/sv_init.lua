@@ -160,11 +160,19 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 	  
 	  if choice_count == 0 then return end
 	  
+      -- Print how many traitors there are supposed to be.
+      -- this should help find the following issue: https://github.com/lzinga/TTTWeightedTraitorSelection/issues/1
+      for k,v in pairs(player.GetAll()) do
+        if IsValid(v) and v:IsAdmin() then
+            v:PrintMessage(HUD_PRINTTALK , "Traitor Count" .. traitor_count)
+        end
+      end
+      
 	  print("Choice Count: " .. choice_count)
 	  print("Traitor Count: " .. traitor_count)
 	  print("Detective Count: " .. det_count)
 
-		-- first select traitors
+        -- first select traitors
 		local ts = 0
 		while ts < traitor_count do
 			shuffleTable(choices)
