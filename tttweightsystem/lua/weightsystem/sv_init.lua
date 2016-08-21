@@ -161,14 +161,6 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 
 	  if choice_count == 0 then return end
 	  
-      -- Print how many traitors there are supposed to be.
-      -- this should help find the following issue: https://github.com/lzinga/TTTWeightedTraitorSelection/issues/1
-      for k,v in pairs(player.GetAll()) do
-        if IsValid(v) and v:IsAdmin() then
-            v:PrintMessage(HUD_PRINTTALK , "Traitor Count" .. traitor_count)
-        end
-      end
-      
 	  print("Choice Count: " .. choice_count)
 	  print("Traitor Count: " .. traitor_count)
 	  print("Detective Count: " .. det_count)
@@ -176,15 +168,12 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
         -- first select traitors
 		local ts = 0
 		while ts < traitor_count do
-			PrintTable(choices)
-			
 			shuffleTable(choices)
 			 
 			selectedPlayer = SelectPlayerForTraitor( choices, prev_roles )
 			selectedPlayer:SetRole( ROLE_TRAITOR )
 			selectedPlayer:SetWeight( DefaultWeight() )
 			table.RemoveByValue( choices, selectedPlayer )
-			print("Selected Player: " .. selectedPlayer:Nick())
 			ts = ts + 1
 		end
 
@@ -199,20 +188,17 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
          -- sometimes we need all remaining choices to be detective to fill the
          -- roles up, this happens more often with a lot of detective-deniers
          if #choices <= (det_count - ds) then
-            PrintTable(choices)
             for k, pply in pairs(choices) do
                if IsValid(pply) then
                   pply:SetRole(ROLE_DETECTIVE)
-                  print("Selected DETECTIVE1: " .. pply:Nick())
                end
             end
 
             break -- out of while
          end
 
-	 PrintTable(choices)
          local pick = math.random(1, #choices)
- local pply = choices[pick]
+	 local pply = choices[pick]
          
          -- we are less likely to be a detective unless we were innocent last round
          if (IsValid(pply) and
@@ -225,7 +211,6 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
             -- alternatives)
             if not pply:GetAvoidDetective() then
                pply:SetRole(ROLE_DETECTIVE)
-               print("Selected DETECTIVE2: " .. pply:Nick())
                ds = ds + 1
             end
 
