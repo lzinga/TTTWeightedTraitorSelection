@@ -85,7 +85,7 @@ end
 
 function PLAYER:GetTraitorChance()
 	if IsValid(self) then
-		return math.floor( (self.Weight / GetActivePlayersTotalWeight()) * 100 )
+		return math.floor( (self:GetWeight() / GetActivePlayersTotalWeight()) * 100 )
 	end
 end
 
