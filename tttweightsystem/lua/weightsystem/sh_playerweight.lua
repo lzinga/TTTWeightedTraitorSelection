@@ -20,7 +20,11 @@ PLAYER = FindMetaTable "Player"
 
 	
 function PLAYER:GetWeight()
-	return self.Weight
+	local weight = self.Weight;
+	if weight == nil then
+		weight = DefaultWeight()
+	end
+	return weight
 end
 
 function PLAYER:GetRoundsPlayed()
