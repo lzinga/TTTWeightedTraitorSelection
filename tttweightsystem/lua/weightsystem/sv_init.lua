@@ -183,7 +183,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 			selectedPlayer = SelectPlayerForTraitor( choices, prev_roles )
 			selectedPlayer:SetRole( ROLE_TRAITOR )
 			selectedPlayer:SetWeight( DefaultWeight() )
-			table.RemoveByValue( choices, choices[selectedPlayer] )
+			table.RemoveByValue( choices, selectedPlayer )
 			print("Selected Player: " .. selectedPlayer:Nick())
 			ts = ts + 1
 		end
