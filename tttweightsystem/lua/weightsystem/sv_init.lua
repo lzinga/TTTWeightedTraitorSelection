@@ -71,6 +71,10 @@ hook.Add("TTTBeginRound", "TTTWS_BeginRound", function()
 end)
 
 hook.Add("PlayerSay", "TTTWS_PlayerSay", function(ply, text, teamOnly)
+	print(string.lower(text))
+	print(string.lower(WeightSystem.TraitorChanceCommand))
+	print(string.find(string.lower(text), string.lower(WeightSystem.TraitorChanceCommand)))
+	
 	if string.find(string.lower(text), string.lower(WeightSystem.TraitorChanceCommand)) then
 		TellPlayersTraitorChance(ply)
 	end
