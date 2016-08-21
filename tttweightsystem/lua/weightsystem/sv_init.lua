@@ -81,7 +81,7 @@ function SelectPlayerForTraitor( choices, prev_roles )
 	--local minimumWeight = math.floor((totalWeight * .2))
 	
 	for k, v in pairs(choices) do
-		totalWeight = totalWeight + v:GetWeight()
+		totalWeight = totalWeight + (v:GetWeight() != nil ? v:GetWeight() : DefaultWeight())
 	end
 	print( "Total Weight: " .. totalWeight )
 	
