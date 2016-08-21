@@ -202,6 +202,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
             for k, pply in pairs(choices) do
                if IsValid(pply) then
                   pply:SetRole(ROLE_DETECTIVE)
+                  print("Selected DETECTIVE1: " .. pply:Nick())
                end
             end
 
@@ -223,6 +224,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
             -- alternatives)
             if not pply:GetAvoidDetective() then
                pply:SetRole(ROLE_DETECTIVE)
+               print("Selected DETECTIVE2: " .. pply:Nick())
                ds = ds + 1
             end
 
