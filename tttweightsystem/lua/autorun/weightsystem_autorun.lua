@@ -2,8 +2,8 @@ local version = "1.0.10";
 
 WeightSystem = WeightSystem or {}
 WeightSystem.VERSION = version
-WeightSystem.TraitorChanceCommand = GetConVarString("ttt_traitor_chance_command")
 CreateConVar("ttt_traitor_chance_command", "!TC", FCVAR_ARCHIVE, "Command that allows users to see their traitor chance when typing in the command.")
+WeightSystem.TraitorChanceCommand = GetConVarString("ttt_traitor_chance_command")
 
 if SERVER then
 
