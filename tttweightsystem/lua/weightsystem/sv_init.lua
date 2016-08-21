@@ -183,7 +183,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 			selectedPlayer = SelectPlayerForTraitor( choices, prev_roles )
 			selectedPlayer:SetRole( ROLE_TRAITOR )
 			selectedPlayer:SetWeight( DefaultWeight() )
-			table.remove( choices, choices[selectedPlayer] )
+			table.RemoveByValue( choices, choices[selectedPlayer] )
 			print("Selected Player: " .. selectedPlayer:Nick())
 			ts = ts + 1
 		end
@@ -199,6 +199,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
          -- sometimes we need all remaining choices to be detective to fill the
          -- roles up, this happens more often with a lot of detective-deniers
          if #choices <= (det_count - ds) then
+            PrintTable(choices)
             for k, pply in pairs(choices) do
                if IsValid(pply) then
                   pply:SetRole(ROLE_DETECTIVE)
@@ -209,10 +210,10 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
             break -- out of while
          end
 
-
+	 PrintTable(choices)
          local pick = math.random(1, #choices)
-         local pply = choices[pick]
-
+ local pply = choices[pick]
+         
          -- we are less likely to be a detective unless we were innocent last round
          if (IsValid(pply) and
              ((pply:GetBaseKarma() > min_karma and
