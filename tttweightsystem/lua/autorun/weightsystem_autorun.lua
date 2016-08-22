@@ -1,9 +1,11 @@
-local version = "1.0.11";
+local version = "1.0.12";
 
 WeightSystem = WeightSystem or {}
 WeightSystem.VERSION = version
 CreateConVar("ttt_traitor_chance_command", "!TC", FCVAR_ARCHIVE, "Command that allows users to see their traitor chance when typing in the command.")
 WeightSystem.TraitorChanceCommand = GetConVarString("ttt_traitor_chance_command")
+WeightSystem.StorageType = "sqlite" --This can be 'mysql' or 'sqlite'
+WeightSystem.TableName = "TTT_WeightSystem"
 
 if SERVER then
 
@@ -16,18 +18,20 @@ if SERVER then
 		file.CreateDir("weightsystem")
 	end
 
-	-- Create database.txt if it doesn't exist ( gives a template for the user )
-	if not file.Exists( "weightsystem/database-template.txt", "DATA") then
-		local CreateDBTemplate = { Host = "[HostName]", Port = 3306, User = "[Username]", Password = "[Password]", DatabaseName = "[DatabaseName]", TableName = "TTT_WeightSystem" }
-		local dbJson = util.TableToJSON( CreateDBTemplate ) -- Convert the player table to JSON
-		file.Write( "weightsystem/database-template.txt", dbJson )
-	end
-	if file.Exists( "weightsystem/database.txt", "DATA") then
-		local dbContent = file.Read("weightsystem/database.txt", "DATA")
-		local Database = util.JSONToTable( dbContent )
-		WeightSystem.Database = Database
-	else
-		Message("Could not find database.txt file" )
+	if WeightSystem.StorageType == "mysql" then
+		-- Create database.txt if it doesn't exist ( gives a template for the user )
+		if not file.Exists( "weightsystem/database-template.txt", "DATA") then
+			local CreateDBTemplate = { Host = "[HostName]", Port = 3306, User = "[Username]", Password = "[Password]", DatabaseName = "[DatabaseName]", TableName = WeightSystem.TableName }
+			local dbJson = util.TableToJSON( CreateDBTemplate ) -- Convert the player table to JSON
+			file.Write( "weightsystem/database-template.txt", dbJson )
+		end
+		if file.Exists( "weightsystem/database.txt", "DATA") then
+			local dbContent = file.Read("weightsystem/database.txt", "DATA")
+			local Database = util.JSONToTable( dbContent )
+			WeightSystem.Database = Database
+		else
+			Message("Could not find database.txt file" )
+		end
 	end
 	
 
