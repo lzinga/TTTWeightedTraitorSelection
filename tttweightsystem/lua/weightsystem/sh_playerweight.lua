@@ -20,7 +20,11 @@ PLAYER = FindMetaTable "Player"
 
 	
 function PLAYER:GetWeight()
-	return self.Weight
+	local weight = self.Weight;
+	if weight == nil then
+		weight = DefaultWeight()
+	end
+	return weight
 end
 
 function PLAYER:GetRoundsPlayed()
@@ -81,7 +85,7 @@ end
 
 function PLAYER:GetTraitorChance()
 	if IsValid(self) then
-		return math.floor( (self.Weight / GetActivePlayersTotalWeight()) * 100 )
+		return math.floor( (self:GetWeight() / GetActivePlayersTotalWeight()) * 100 )
 	end
 end
 

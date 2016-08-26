@@ -35,14 +35,14 @@ end
 
 math.randomseed( os.time() )
 local function shuffleTable( t )
-    local rand = math.random 
-    local iterations = #t
-    local j
+	local rand = math.random 
+	local iterations = #t
+	local j
     
-    for i = iterations, 2, -1 do
-        j = rand(i)
-        t[i], t[j] = t[j], t[i]
-    end
+	for i = iterations, 2, -1 do
+		j = rand(i)
+		t[i], t[j] = t[j], t[i]
+	end
 end
 
 hook.Add("TTTBeginRound", "TTTWS_BeginRound", function()
@@ -79,7 +79,7 @@ end)
 function SelectPlayerForTraitor( choices, prev_roles )
 	local totalWeight = 0
 	--local minimumWeight = math.floor((totalWeight * .2))
-	
+
 	for k, v in pairs(choices) do
 		totalWeight = totalWeight + v:GetWeight()
 	end
@@ -113,23 +113,23 @@ GetTraitorCount = nil
 GetDetectiveCount = nil
 hook.Add( "Initialize", "TTTWS_Initialize", function ()
 	
-   -- Find the GetTraitorCount and GetDetectiveCount functions
-   for i = 1, math.huge do
-      local k, v = debug.getupvalue( SelectRoles, i )
-      if k == "GetTraitorCount" then
-         GetTraitorCount = v
-      end
-      if k == "GetDetectiveCount" then
-         GetDetectiveCount = v
-      end
+	-- Find the GetTraitorCount and GetDetectiveCount functions
+	for i = 1, math.huge do
+		local k, v = debug.getupvalue( SelectRoles, i )
+		if k == "GetTraitorCount" then
+			GetTraitorCount = v
+		end
+		if k == "GetDetectiveCount" then
+			GetDetectiveCount = v
+		end
+		
+		if GetTraitorCount ~= nil and GetDetectiveCount ~= nil or k == nil then
+			break;
+		end
+	end
 
-      if GetTraitorCount ~= nil and GetDetectiveCount ~= nil or k == nil then
-         break;
-      end
-   end
-
-   -- Select Roles
-   function SelectRoles()
+	-- Select Roles
+	function SelectRoles()
 		local choices = {}
 		local prev_roles = {
 			[ROLE_INNOCENT] = {},
@@ -141,7 +141,8 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 
 		-- Get Choices and set to innocent
 		for k,v in pairs(player.GetAll()) do
-			if IsValid(v) and (not v:IsSpec()) and (not v:IsBot()) then
+			-- if IsValid(v) and (not v:IsSpec()) and (not v:IsBot()) then
+			if IsValid(v) and (not v:IsSpec()) then
 				-- save previous role and sign up as possible traitor/detective
 				local r = GAMEMODE.LastRole[v:UniqueID()] or v:GetRole() or ROLE_INNOCENT
 
@@ -157,17 +158,9 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
       local choice_count = #choices
       local traitor_count = GetTraitorCount(choice_count)
       local det_count = GetDetectiveCount(choice_count)
-	  
+
 	  if choice_count == 0 then return end
 	  
-      -- Print how many traitors there are supposed to be.
-      -- this should help find the following issue: https://github.com/lzinga/TTTWeightedTraitorSelection/issues/1
-      for k,v in pairs(player.GetAll()) do
-        if IsValid(v) and v:IsAdmin() then
-            v:PrintMessage(HUD_PRINTTALK , "Traitor Count" .. traitor_count)
-        end
-      end
-      
 	  print("Choice Count: " .. choice_count)
 	  print("Traitor Count: " .. traitor_count)
 	  print("Detective Count: " .. det_count)
@@ -180,7 +173,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 			selectedPlayer = SelectPlayerForTraitor( choices, prev_roles )
 			selectedPlayer:SetRole( ROLE_TRAITOR )
 			selectedPlayer:SetWeight( DefaultWeight() )
-			table.remove( choices, choices[selectedPlayer] )
+			table.RemoveByValue( choices, selectedPlayer )
 			ts = ts + 1
 		end
 
@@ -204,10 +197,9 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
             break -- out of while
          end
 
-
          local pick = math.random(1, #choices)
-         local pply = choices[pick]
-
+	 local pply = choices[pick]
+         
          -- we are less likely to be a detective unless we were innocent last round
          if (IsValid(pply) and
              ((pply:GetBaseKarma() > min_karma and
