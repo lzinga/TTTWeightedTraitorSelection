@@ -20,7 +20,7 @@ PLAYER = FindMetaTable "Player"
 
 	
 function PLAYER:GetWeight()
-	local weight = self.Weight;
+	local weight = self.Weight
 	if weight == nil then
 		weight = DefaultWeight()
 	end
