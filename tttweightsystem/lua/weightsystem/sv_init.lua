@@ -124,7 +124,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 		end
 		
 		if GetTraitorCount ~= nil and GetDetectiveCount ~= nil or k == nil then
-			break;
+			break
 		end
 	end
 
@@ -135,7 +135,7 @@ hook.Add( "Initialize", "TTTWS_Initialize", function ()
 			[ROLE_INNOCENT] = {},
 			[ROLE_TRAITOR] = {},
 			[ROLE_DETECTIVE] = {}
-		};
+		}
 
 		if not GAMEMODE.LastRole then GAMEMODE.LastRole = {} end
 
