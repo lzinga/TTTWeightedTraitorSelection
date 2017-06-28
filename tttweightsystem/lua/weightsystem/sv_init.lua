@@ -88,13 +88,19 @@ function SelectPlayerForTraitor( choices, prev_roles )
 	local r = math.random(1, totalWeight)
 	print( "Amount to beat: " .. r)
 	
-	
+	local defaultT
 	local lastChance
+	
 	for k,v in pairs(choices) do
+		
+		-- Sets the currently being validated player as the default T to be returned.
+		defaultT = v
+		
 		-- Check to see if the randomly selected number minus the current players weight is less then 0 it means they win the role.
 		print( v:GetName() .. ": " .. r .. " - " .. v:GetWeight() .. " = " .. r - v:GetWeight())
+
 		if (r - v:GetWeight()) <= 0 then
-		
+			
 			-- Set the last chance player to current player, if it ends up not accepting a player to return it will return the last known person in loop.
 			 lastChance = v
 			if IsValid(v) and ( (not table.HasValue(prev_roles[ROLE_TRAITOR], v)) or ( math.random(1, 3) == 2) ) then
@@ -103,8 +109,12 @@ function SelectPlayerForTraitor( choices, prev_roles )
 		end
 		r = r - v:GetWeight()
 	end
-		
-	return lastChance
+	
+	if lastChance ~= nil then
+		return lastChance
+	end
+	
+	return defaultT
 end
 
 
