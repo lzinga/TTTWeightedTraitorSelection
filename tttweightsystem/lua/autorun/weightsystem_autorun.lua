@@ -1,4 +1,4 @@
-local version = "1.0.12"
+local version = "1.0.13"
 
 WeightSystem = WeightSystem or {}
 WeightSystem.VERSION = version
