@@ -186,7 +186,7 @@ if SERVER then
 	end
 	
 	function PLAYER:SetDetectiveCount( count )
-		self:SetNWInt("TTTWeightSystem_DetectiveCountCount", count)
+		self:SetNWInt("TTTWeightSystem_DetectiveCount", count)
 	end
 	
 	function PLAYER:SetTraitorCount( count )
