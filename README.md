@@ -1,7 +1,3 @@
-###### Warning from author
-This was literally one of my first scripts I wrote for gmod so im sure you will find some interesting things that I did to make it work.
-
-
 # Description
 
 Weighted Traitor Selection allows players to be fairly selected to become traitors and have more people become traitors rather then not getting traitor 5 maps in a row. The longer you go with out being traitor the higher chance you have at becoming traitor. Now that might sound like you could determine who the traitor is; However the algorithm is non-deterministic, making it practically impossible to deduce the current traitors (with the exception with only 2 people playing)
