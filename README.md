@@ -42,13 +42,11 @@ This feature was requested by a user, with it you have the ability to give certa
 If you do not want to use this feature simply don't have a file named `groupweight.txt` in the `/data/weightsystem/` folder with a proper configuration.
 
 The settings for the `groupweight.txt` are as follows -
-
+### Group Weight Settings
 **MinWeight**: The minimum amount of weight you would want added to users in the group.
+
 **MaxWeight**: The maximum amount of weight you would want added to users in the group.
+
 **GroupName**: The group you wish for a random amount between MinWeight and MaxWeight to be added.
 
-As a note, users who are in a group and receive extra weight will be told they are getting extra weight because they are in the group.
-
-
-
-
+As a note, users who are in a group and receive extra weight will be told they are getting extra weight because they are in said group.
