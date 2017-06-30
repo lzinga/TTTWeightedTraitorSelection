@@ -75,45 +75,46 @@ else
 end
 
 
-
-hook.Add("InitPostEntity", "TTTWS_updatecheck", function()
-		http.Fetch("https://raw.githubusercontent.com/lzinga/TTTWeightedTraitorSelection/master/tttweightsystem/lua/autorun/weightsystem_autorun.lua", function(body)
-			local str = string.match(body, "[^\n]+")
-			local ver = str:sub(18, -3)
-			local major, minor, patch = ver:match("(%d+)%.(%d+)%.(%d+)")
-			major = tonumber(major) or 0
-			minor = tonumber(minor) or 0
-			patch = tonumber(patch) or 0
-			local curmajor, curminor, curpatch = version:match("(%d+)%.(%d+)%.(%d+)")
-			curmajor = tonumber(curmajor) or 0
-			curminor = tonumber(curminor) or 0
-			curpatch = tonumber(curpatch) or 0
-			local msg
-			if major > curmajor then
-				msg = [[
-A new major version of TTT Weight System is
-available (%%%%%%%%).
-]]
-			elseif minor > curminor then
-				msg = [[
-A new minor version of TTT Weight System is
-available (%%%%%%%%).
-]]
-			elseif patch > curpatch then
-				msg = [[
-A new patch is available for
-TTT Weight System (%%%%%%%%).
-]]
-			else
-				msg = [[
-[TTT Weight System] is up to date (%%%%%%%%).
-]]
-			end
-			if msg then
-				msg = string.gsub(msg, "%%+", ver)
-				for w in string.gmatch(msg, "[^\n]+") do
-					LocalPlayer():PrintMessage(HUD_PRINTTALK , w .. string.rep(" ", 32 - #w))
+if CLIENT then
+	hook.Add("InitPostEntity", "TTTWS_updatecheck", function()
+			http.Fetch("https://raw.githubusercontent.com/lzinga/TTTWeightedTraitorSelection/master/tttweightsystem/lua/autorun/weightsystem_autorun.lua", function(body)
+				local str = string.match(body, "[^\n]+")
+				local ver = str:sub(18, -3)
+				local major, minor, patch = ver:match("(%d+)%.(%d+)%.(%d+)")
+				major = tonumber(major) or 0
+				minor = tonumber(minor) or 0
+				patch = tonumber(patch) or 0
+				local curmajor, curminor, curpatch = version:match("(%d+)%.(%d+)%.(%d+)")
+				curmajor = tonumber(curmajor) or 0
+				curminor = tonumber(curminor) or 0
+				curpatch = tonumber(curpatch) or 0
+				local msg
+				if major > curmajor then
+					msg = [[
+	A new major version of TTT Weight System is
+	available (%%%%%%%%).
+	]]
+				elseif minor > curminor then
+					msg = [[
+	A new minor version of TTT Weight System is
+	available (%%%%%%%%).
+	]]
+				elseif patch > curpatch then
+					msg = [[
+	A new patch is available for
+	TTT Weight System (%%%%%%%%).
+	]]
+				else
+					msg = [[
+	[TTT Weight System] is up to date (%%%%%%%%).
+	]]
 				end
-			end
-		end)
-end)
+				if msg then
+					msg = string.gsub(msg, "%%+", ver)
+					for w in string.gmatch(msg, "[^\n]+") do
+						LocalPlayer():PrintMessage(HUD_PRINTTALK , w .. string.rep(" ", 32 - #w))
+					end
+				end
+			end)
+	end)
+end
