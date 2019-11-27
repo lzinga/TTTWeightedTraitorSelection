@@ -17,12 +17,14 @@ If you are planning on using one of the two SQL methods, you will need Mysqloo (
 If you are not using SQL to save (1.2.0), proceed to installation
 
 # Installation
-  * 1. Copy the folder `tttweightsystem` into your addons folder.
-  * 2. Open the file lua/autorun/weightsystem_autorun.lua, at the top of the file there is a variable named **WeightSystem.StorageType**, set this to *mysql*, *sqlite*, or *json* based on your preferred saving method.
-  * 3a. For SQL (MySql & sqlite), complete the installation of MySQLoo, and set up a database on your server, proceed to 4a.
-  * 3b. For JSON, proceed to 4b.
-  * 4a. Run your server once and it will generate a database-template.txt in `garrysmod/data/weightsystem`, copy and rename it to database.txt and edit the settings inside with your database connection info. (keep it in the same folder)
-  * 4b. Run your server and start a round of TTT (Set minplayers to 1), the round will auto-complete and you are all set.
+1. Copy the folder `tttweightsystem` into your addons folder.
+2. Open the file lua/autorun/weightsystem_autorun.lua, at the top of the file there is a variable named **WeightSystem.StorageType**, set this to *mysql*, *sqlite*, or *json* based on your preferred saving method.
+3.
+  -  For SQL (MySql & sqlite), complete the installation of MySQLoo, and set up a database on your server, proceed to 4a.
+  -  For JSON, proceed to 4.
+4. 
+  - For SQL, Run your server once and it will generate a database-template.txt in `garrysmod/data/weightsystem`, copy and rename it to database.txt and edit the settings inside with your database connection info. (keep it in the same folder)
+  - For JSON, Run your server and start a round of TTT (Set minplayers to 1), the round will auto-complete and you are all set.
 
 Once the database settings are configured in the database.txt, restart your server or change maps for it to generate the tables. Once the tables are created, thats it! Go gain some weight!
 
