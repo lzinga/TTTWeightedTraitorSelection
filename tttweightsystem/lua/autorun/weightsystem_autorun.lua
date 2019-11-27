@@ -1,10 +1,10 @@
-local version = "1.1.0"
+local version = "1.2.0"
 
 WeightSystem = WeightSystem or {}
 WeightSystem.VERSION = version
 CreateConVar("ttt_traitor_chance_command", "!TC", FCVAR_ARCHIVE, "Command that allows users to see their traitor chance when typing in the command.")
 WeightSystem.TraitorChanceCommand = GetConVarString("ttt_traitor_chance_command")
-WeightSystem.StorageType = "sqlite" --This can be 'mysql' or 'sqlite'
+WeightSystem.StorageType = "json" --This can be 'mysql', 'sqlite', or 'json'
 WeightSystem.TableName = "TTT_WeightSystem"
 
 if SERVER then
@@ -34,6 +34,17 @@ if SERVER then
 		end
 	end
 	
+	-- Phantom139: Added code block for custom "json" storage type
+	if WeightSystem.StorageType == "json" then
+		if file.Exists( "weightsystem/table.json", "DATA") then
+			local dbContent = file.Read("weightsystem/table.json", "DATA")
+			local wTable = util.JSONToTable( dbContent )
+			WeightSystem.table = wTable
+		else
+			WeightSystem.table = {}
+			Message("Could not find table.json file, assuming empty" )
+		end
+	end
 
 		-- Make it so file exists no matter what.
 	if not file.Exists( "weightsystem/groupperms.txt", "DATA") then
@@ -53,8 +64,8 @@ if SERVER then
 	-- Create group weight
 	if not file.Exists( "weightsystem/groupweight-template.txt", "DATA") then
 		local customGroupWeightsTemplate = {
-			{ GroupName = "[GroupName]", MinWeight = 0, MaxWeight = 10 },
-			{ GroupName = "[AnotherGroupName]", MinWeight = 5, MaxWeight = 10 }
+			{ GroupName = "[GroupName]", MinWeight = 0, MaxWeight = 10, cappedWeight = -1 },
+			{ GroupName = "[AnotherGroupName]", MinWeight = 5, MaxWeight = 10, cappedWeight = -1 }
 		}
 		local gwJson = util.TableToJSON( customGroupWeightsTemplate )
 		file.Write( "weightsystem/groupweight-template.txt", gwJson)

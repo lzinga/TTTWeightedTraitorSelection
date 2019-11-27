@@ -43,6 +43,11 @@ function PLAYER:GetTraitorCount()
 	return self:GetNWInt("TTTWeightSystem_TraitorCount")
 end
 
+-- Phantom139: Added
+function PLAYER:GetRoundsSinceTraitorCount()
+	return self:GetNWInt("TTTWeightSystem_NonTraitorRoundsCount") 
+end
+
 function SetPlayerFunModeScale( ply )
 	if GetConVar("ttt_weight_system_fun_mode"):GetBool() then
 		local min = 1.2
@@ -90,6 +95,13 @@ function PLAYER:GetTraitorChance()
 end
 
 if SERVER then
+
+	util.AddNetworkString("WeightSystem_ResetTable")
+	net.Receive("WeightSystem_ResetTable", function(len, ply)
+		if(ply:IsAdmin()) then
+			ResetTable()
+		end
+	end)
 
 	util.AddNetworkString("WeightSystem_WeightInfo")
     net.Receive("WeightSystem_WeightInfo", function(len, ply)
@@ -192,4 +204,9 @@ if SERVER then
 	function PLAYER:SetTraitorCount( count )
 		self:SetNWInt("TTTWeightSystem_TraitorCount", count)
 	end
+	
+	-- Phantom139: Added
+	function PLAYER:SetRoundsSinceTraitorCount( count )
+		self:SetNWInt("TTTWeightSystem_NonTraitorRoundsCount", count)
+	end	
 end
