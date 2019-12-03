@@ -15,6 +15,9 @@ end
 local db = mysqloo.connect(WeightSystem.Database.Host, WeightSystem.Database.User, WeightSystem.Database.Password, WeightSystem.Database.DatabaseName, WeightSystem.Database.Port)
 local queue = {}
 
+function SaveTable()
+	Message("SaveTable() Call ignored, only used in JSON")
+end
 
 function DatabaseExists()
 	ExecuteQuery("SELECT count(*) FROM information_schema.tables WHERE table_name = '" .. WeightSystem.Database.TableName .. "'", function(data)
@@ -58,7 +61,14 @@ function db:onConnected()
     Message("Connected to database")
 	DatabaseExists()
 	
-	ExecuteQuery("CREATE TABLE IF NOT EXISTS " .. WeightSystem.Database.TableName .. " (Id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, SteamId BIGINT UNSIGNED NOT NULL, Weight SMALLINT UNSIGNED NOT NULL, LastUpdated DATETIME DEFAULT '" .. DateTime() .. "', PRIMARY KEY (Id))")
+	ExecuteQuery("CREATE TABLE IF NOT EXISTS " .. WeightSystem.Database.TableName .. " (Id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, SteamId BIGINT UNSIGNED NOT NULL, " ..
+				 "Weight SMALLINT UNSIGNED NOT NULL, " ..
+				 "InnocentRounds SMALLINT UNSIGNED NOT NULL, " ..
+				 "TraitorRounds SMALLINT UNSIGNED NOT NULL, " ..
+				 "DetectiveRounds SMALLINT UNSIGNED NOT NULL, " ..
+				 "RoundsPlayed SMALLINT UNSIGNED NOT NULL, " ..
+				 "RoundsSinceTraitor SMALLINT UNSIGNED NOT NULL, " ..
+				 "LastUpdated DATETIME DEFAULT '" .. DateTime() .. "', PRIMARY KEY (Id))")
 
     Message("Running commands that were lost")
     for k, v in pairs( queue ) do
@@ -78,11 +88,29 @@ function db:onConnectionFailed(err)
     Message("Connection to database failed")
 end
 
+function ResetTable()
+	Message("Resetting weight table")
+	
+	ExecuteQuery("DROP TABLE IF EXISTS " .. WeightSystem.Database.TableName)
+	
+	db:connect()
+end
 
-function UpdatePlayerWeight(ply, weight)
+function UpdatePlayerDatabase(ply, weight)
         local newWeight = weight or ply:GetWeight()
+		local innocent = ply:GetInnocentCount()
+		local traitor = ply:GetTraitorCount()
+		local detective = ply:GetDetectiveCount()
+		local rounds = ply:GetRoundsPlayed()
+		local tRounds = ply:GetRoundsSinceTraitorCount()		
         if ply:IsPlayer() and not ply:IsBot() then
-            ExecuteQuery("UPDATE " .. WeightSystem.Database.TableName .. " SET Weight = " .. newWeight .. ", LastUpdated = '" .. DateTime() .. "' WHERE steamid = " .. ply:SteamID64())
+            ExecuteQuery("UPDATE " .. WeightSystem.Database.TableName .. " SET Weight = " .. newWeight .. ", " ..
+						 "InnocentRounds = " .. innocent .. ", " ..
+						 "TraitorRounds = " .. traitor .. ", " ..
+						 "DetectiveRounds = " .. detective .. ", " ..
+						 "RoundsPlayed = " .. rounds .. ", " ..
+						 "RoundsSinceTraitor = " .. tRounds .. ", " ..
+						 "LastUpdated = '" .. DateTime() .. "' WHERE steamid = " .. ply:SteamID64())
         end
 end
 
@@ -94,15 +122,28 @@ end)
 -- When player joins check if they have a record already, if not create one and set their default weight.
 hook.Add("PlayerInitialSpawn", "TTTWS_PlayerInitialSpawn", function(ply)
     if ply:IsPlayer() and not ply:IsBot() then
-        ExecuteQuery("SELECT Weight FROM " .. WeightSystem.Database.TableName .. " WHERE SteamId = " .. ply:SteamID64(), function(data)
+        ExecuteQuery("SELECT * FROM " .. WeightSystem.Database.TableName .. " WHERE SteamId = " .. ply:SteamID64(), function(data)
                 if table.Count(data) > 0 then
-                    Message(ply:GetName() .. " exists in database, setting player weight to: " .. data[1].Weight)
+                    Message(ply:GetName() .. " exists in database, setting player weight to: " .. data[1].Weight .. ", Round Data: " ..
+							"(" .. data[1].InnocentRounds .. ", " .. data[1].TraitorRounds .. ", " .. data[1].DetectiveRounds .. ", " ..
+							data[1].RoundsPlayed .. ", " .. data[1].RoundsSinceTraitor .. ")")
                     ply:SetWeight( data[1].Weight )
+					ply:SetInnocentCount( data[1].InnocentRounds )
+					ply:SetTraitorCount( data[1].TraitorRounds )
+					ply:SetDetectiveCount( data[1].DetectiveRounds )
+					ply:SetRoundsPlayed( data[1].RoundsPlayed )
+					ply:SetRoundsSinceTraitorCount( data[1].RoundsSinceTraitor )
                 else
                     local defaultWeight = DefaultWeight()
                     Message(ply:GetName() .. " does not exist in database, creating user and setting default weight to: " .. defaultWeight)
-                    ExecuteQuery("INSERT INTO " .. WeightSystem.Database.TableName .. " ( SteamId, Weight, LastUpdated ) VALUES ( '" .. ply:SteamID64() .. "', " .. defaultWeight .. ", '" .. DateTime() .. "' )")
+                    ExecuteQuery("INSERT INTO " .. WeightSystem.Database.TableName .. " ( SteamId, Weight, InnocentRounds, TraitorRounds, DetectiveRounds, RoundsPlayed, RoundsSinceTraitor, LastUpdated ) " ..
+								 "VALUES ( '" .. ply:SteamID64() .. "', " .. defaultWeight .. ", 0, 0, 0, 0, 0, '" .. DateTime() .. "' )")
                     ply:SetWeight( defaultWeight )
+					ply:SetInnocentCount( 0 )
+					ply:SetTraitorCount( 0 )
+					ply:SetDetectiveCount( 0 )
+					ply:SetRoundsPlayed( 0 )
+					ply:SetRoundsSinceTraitorCount( 0 )					
                 end
         end)
    end

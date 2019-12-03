@@ -11,4 +11,9 @@ if storage == "sqlite" then
 elseif storage == "mysql" then
 	Message("Loading with MySQL")
 	include("sv_database_mysql.lua")
+elseif storage == "json" then
+	Message("Loading with JSON Tables")
+	include("sv_database_json.lua")
+else
+	Message("Unknown storage type " .. storage)
 end

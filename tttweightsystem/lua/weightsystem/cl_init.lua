@@ -137,6 +137,12 @@ local function TryOpenMenu( ply )
 end
 concommand.Add("ttt_weightlogs", TryOpenMenu)
 
+local function TryResetTable( ply)
+	net.Start("WeightSystem_ResetTable")
+	net.SendToServer()
+end
+concommand.Add("ttt_weightreset", TryResetTable)
+
 
 function GetPlayerObjectFromName( plyName )
 	for k, v in pairs(player.GetAll()) do
