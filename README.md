@@ -1,6 +1,6 @@
 # TTT Weighted Traitor Selection
 ## Version 1.2.0
-## By: Izinga, Updated by Phantom139
+## By: Izinga
 
 # Description
 
@@ -20,7 +20,7 @@ If you are not using SQL to save (1.2.0), proceed to installation
 1. Copy the folder `tttweightsystem` into your addons folder.
 2. Open the file lua/autorun/weightsystem_autorun.lua, at the top of the file there is a variable named **WeightSystem.StorageType**, set this to *mysql*, *sqlite*, or *json* based on your preferred saving method.
 3.
-  -  For SQL (MySql & sqlite), complete the installation of MySQLoo, and set up a database on your server, proceed to 4a.
+  -  For SQL (MySql & sqlite), complete the installation of MySQLoo, and set up a database on your server.
   -  For JSON, proceed to 4.
 4. 
   - For SQL, Run your server once and it will generate a database-template.txt in `garrysmod/data/weightsystem`, copy and rename it to database.txt and edit the settings inside with your database connection info. (keep it in the same folder)
@@ -28,7 +28,7 @@ If you are not using SQL to save (1.2.0), proceed to installation
 
 Once the database settings are configured in the database.txt, restart your server or change maps for it to generate the tables. Once the tables are created, thats it! Go gain some weight!
 
-# Commands
+# Console Commands
 
 **ttt_traitor_chance_command**: Sets the command players can use to see their traitor chance. If ttt_show_traitor_chance is set to 0 this will not work. (default !TC)
 
@@ -42,7 +42,7 @@ Once the database settings are configured in the database.txt, restart your serv
 
 ![Image of fat person](http://puu.sh/ignmA/0ed089cde9.jpg)
 
-# Admin Commands
+# Admin Console Commands
 **ttt_weightlogs**: (just typed into console) This allows admins to view all players weight and their chance to become traitor. Admins are also able to see a count of how many times each player has been a specific role. In the weight menu you can also get the players SteamID and set their weight back to default or set the weight to what ever you want, giving the player a higher chance or lower chance at becoming traitor in next round.
 
 To gives users permission to `ttt_weightlogs` they must be in an allowed group. Any group you want to have access must be added to the `data/weightsystem/groupperms.txt` file which gets generated on first load of the script.
@@ -52,11 +52,15 @@ To gives users permission to `ttt_weightlogs` they must be in an allowed group. 
 # Group Extra Weight
 This feature was requested by a user, with it you have the ability to give certain groups extra weight. For example you can have donators get 1 or 2 extra weight every round to increase their chances of being traitor more often. Like the `database.txt` file a `groupweight-template.txt` will be generated with an example (like below) that you can use. You can also just create the file yourself and name it `groupweight.txt` and make sure it is in `/data/weightsystem/` folder.
 
-As of 1.2.0, you can now also use this system to cap a player's chances of being a traitor when assigned to a group as well.
+As of 1.2.0, you can now also use this system to cap a player's percentage of being a traitor when assigned to a group as well.
 
 ```json
 { "1":{ "MaxWeight":10, "GroupName":"[GroupName]", "MinWeight":0, "cappedWeight":10 }, "2":{ "MaxWeight":10, "GroupName":"[AnotherGroupName]", "MinWeight":5, "cappedWeight": 100 } }
 ```
+
+In the above example, the first entry would grant a random weight gain of 0 to 10 each round, but the player would never be allowed to gain weight allowing them to go above a 10% chance to be a traitor in a round. In the second example, the weight gain is 5 to 10 points, but the player can go up to 100% chance.
+
+If you would like to not have bonus weight gain, set both MinWeight and MaxWeight to 0.
 
 If you do not want to use this feature simply don't have a file named `groupweight.txt` in the `/data/weightsystem/` folder with a proper configuration.
 
@@ -82,3 +86,13 @@ As a note, users who are in a group and receive extra weight will be told they a
   * Added an algorithm to count the number of rounds you have not gotten traitor and exponentially increase weight gain once you pass a threshold.
   * Added round statistics to the beginning of a round.
   * Added the ability to cap the traitor chance percentage of a player based on their assigned group.
+  
+# Contributors
+
+## The following have helped this project with bug fixes and feature additions
+
+  * LaurenceKaye
+  * MinIsMin
+  * janesth
+  * monster010
+  * Phantom139
