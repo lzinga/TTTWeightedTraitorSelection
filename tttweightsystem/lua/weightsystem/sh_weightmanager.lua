@@ -4,7 +4,7 @@ function DefaultWeight()
 	local playerCount = 0
 	for k,ply in pairs(player.GetAll()) do
 		if IsValid(ply) and (not ply:IsBot()) then
-			playerCount += 1
+			playerCount = playerCount + 1
 		end
 	end
 
