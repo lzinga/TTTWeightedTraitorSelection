@@ -1,32 +1,25 @@
 # TTT Weighted Traitor Selection
-## Version 1.2.0
-## By: Izinga
+- Latest Version: 1.2.0
+- Originally Created By: [Lzinga](https://github.com/lzinga)
+- Contributors: [View](#contributors)
 
 # Description
+This addon allows players to become traitors fairly and allow the entire server to enjoy being traitor more often. With this addon the longer you go with out being a traitor the higher chance you have at becoming traitor, this also includes between map changes. This may sound like you could determine who the traitor is; however, the algorithm is non-deterministic making it practically impossible to deduce who the current traitors may be.
 
-Weighted Traitor Selection allows players to be fairly selected to become traitors and have more people become traitors rather then not getting traitor 5 maps in a row. The longer you go with out being traitor the higher chance you have at becoming traitor. Now that might sound like you could determine who the traitor is; However the algorithm is non-deterministic, making it practically impossible to deduce the current traitors (with the exception with only 2 people playing)
-
-Once you become traitor, your weight gets reset down to a default weight.
+To read more on how this addon works you can read the [How does this work?](https://github.com/lzinga/TTTWeightedTraitorSelection/wiki/How-does-it-work%3F) in the wiki.
 
 # Prerequisites
-
-Depending on your preferred server saving method, you may need additional libraries installed on your server in order for this to properly function. 
-
-If you are planning on using one of the two SQL methods, you will need Mysqloo (https://github.com/FredyH/MySQLOO)
-
-If you are not using SQL to save (1.2.0), proceed to installation
+Depending on your preferred server saving method, you may need additional libraries installed on your server in order for this to properly function. If you are planning on using one of the two SQL methods, you will need Mysqloo (https://github.com/FredyH/MySQLOO). The installation process has instructions for all.
 
 # Installation
 1. Copy the folder `tttweightsystem` into your addons folder.
-2. Open the file lua/autorun/weightsystem_autorun.lua, at the top of the file there is a variable named **WeightSystem.StorageType**, set this to *mysql*, *sqlite*, or *json* based on your preferred saving method.
-3.
-  -  For SQL (MySql & sqlite), complete the installation of MySQLoo, and set up a database on your server.
-  -  For JSON, proceed to 4.
-4. 
-  - For SQL, Run your server once and it will generate a database-template.txt in `garrysmod/data/weightsystem`, copy and rename it to database.txt and edit the settings inside with your database connection info. (keep it in the same folder)
-  - For JSON, Run your server and start a round of TTT (Set minplayers to 1), the round will auto-complete and you are all set.
-
-Once the database settings are configured in the database.txt, restart your server or change maps for it to generate the tables. Once the tables are created, thats it! Go gain some weight!
+1. Open the file `lua/autorun/weightsystem_autorun.lua`, at the top of the file there is a variable named `WeightSystem.StorageType`, set this to `mysql`, `sqlite`, or `json` based on your preferred saving method.
+1. Setup
+      * SQL - Complete the installation of MySQLoo, and set up a database on your server.
+      * JSON - No setup needed. 
+1. Starting your Server
+      * SQL - Run your server once and it will generate a database-template.txt in `garrysmod/data/weightsystem`, copy and rename it to database.txt and edit the settings inside with your database connection info.
+      * JSON - Run your server and start a round of TTT (Set minplayers to 1), the round will auto-complete and you are all set.
 
 # Console Commands
 
@@ -77,9 +70,7 @@ The settings for the `groupweight.txt` are as follows -
 As a note, users who are in a group and receive extra weight will be told they are getting extra weight because they are in said group.
 
 # Change Log
-
-## 1.1.0 => 1.2.0
-
+* **1.1.0 => 1.2.0**
   * Added the ability to store information locally in .json format, set the StorageType to json.
   * Addressed the bug where players can randomly "lose weight", this was due to the system incorrectly trying to save on the final round of a map during the map change.
   * Re-did the weight reset algorithm to be a bit more random in nature, this will prevent the issue with groups of players being traitor together frequently.
@@ -88,8 +79,7 @@ As a note, users who are in a group and receive extra weight will be told they a
   * Added the ability to cap the traitor chance percentage of a player based on their assigned group.
   
 # Contributors
-
-## The following have helped this project with bug fixes and feature additions
+The following users have helped this project with bug fixes and feature additions.
 
   * LaurenceKaye
   * MinIsMin
